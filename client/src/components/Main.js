@@ -1,70 +1,131 @@
-import React from 'react';
+import React from "react";
 import PropTypes from "prop-types";
-//import ReactDOM from 'react-dom';
-//import Button from '@material-ui/core/Button';
-import Betting from  '../contracts/Betting'
-//import getWeb3 from "./utils/getWeb3";
 import { withStyles } from "@material-ui/core/styles";
-
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
+import pink from '@material-ui/core/colors/pink';
+
+// const styles = {
+//   root: {
+//     flexGrow: 1,
+//   },
+//   grow: {
+//     flexGrow: 1,
+//   },
+//   menuButton: {
+//     marginLeft: -12,
+//     marginRight: 20,
+//   },
+// };
 
 const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: {
-      main: '#f44336',
+    palette: {
+      primary: {
+        main: '#7986cb',
+      },
+      secondary: pink,
     },
-  },
 });
+
+
 const styles = theme => ({
-    card: {
-        minWidth: 300,
-        minHeight: 500,
-        height: 500,
-        width: 300,
-        margin: 100,
-        padding: 25
-      }
-
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper
+  },
+  grow: {
+    flexGrow: 1
+  },
+  
 });
-class Main extends React.Component {
-    // componentDidMount = async () => {
-    //     try {
-    //       // Get network provider and web3 instance.
-    //       const web3 = await getWeb3();
-    
-    //       // Use web3 to get the user's accounts.
-    //       const accounts = await web3.eth.getAccounts();
-    
-    //       // Get the contract instance.
-    //       const networkId = await web3.eth.net.getId();
-    //       const deployedNetwork = Betting.networks[networkId];
-    //       const instance = new web3.eth.Contract(
-    //         Betting.abi,
-    //         deployedNetwork && deployedNetwork.address
-    //       );
-    
-    //       // Set web3, accounts, and contract to the state, and then proceed with an
-    //       // example of interacting with the contract's methods.
-    //       this.setState({ web3, accounts, contract: instance });
-    //     } catch (error) {
-    //       // Catch any errors for any of the above operations.
-    //       alert(
-    //         `Failed to load web3, accounts, or contract. Check console for details.`
-    //       );
-    //       console.error(error);
-    //     }
-    //   };
-    // return (
-    //   <Button variant="contained" color="primary">
-    //     Hello World
-    //   </Button>
-      
-    // );
-  }
 
-  Main.propTypes = {
-    classes: PropTypes.object.isRequired
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+// function ButtonAppBar(props) {
+//   const { classes } = props;
+//   return (
+//     <div className={classes.root}>
+//       <AppBar position="static">
+//         <Toolbar>
+//           <IconButton
+//             className={classes.menuButton}
+//             color="inherit"
+//             aria-label="Menu"
+//           >
+//             <MenuIcon />
+//           </IconButton>
+//           <Typography variant="h6" color="inherit" className={classes.grow}>
+//             BlockBet
+//           </Typography>
+//         </Toolbar>
+//       </AppBar>
+//     </div>
+//   );
+// }
+
+// ButtonAppBar.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
+class SimpleTabs extends React.Component {
+  state = {
+    value: 0
   };
-  export default withStyles(styles)(Main);
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { value } = this.state;
+
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              BlockBet
+            </Typography>
+          </Toolbar>
+          <Tabs
+          value={this.state.value}
+          onChange={this.handleChange}
+          indicatorColor="primary"
+          textColor="secondary"
+          centered
+        >
+            <Tab label="Home" />
+          </Tabs>
+        </AppBar>
+        {value === 0 && <TabContainer>Home page of BlockBet</TabContainer>}
+        <div>
+        <Button variant="contained" color="primary" className={classes.button}>
+        Bet
+      </Button>
+        </div>
+      </div>
+    );
+  }
+}
+
+SimpleTabs.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+export default withStyles(styles)(SimpleTabs);
