@@ -7,6 +7,8 @@ contract Betting is usingOraclize {
    uint256 public totalBetsOne;
    uint256 public totalBetsTwo;
    string winner_result;
+   uint count1;
+   uint count2;
    //bool private equal_str;
    bytes32 public oraclizeID;
    //uint256 public numberOfBets;
@@ -28,9 +30,11 @@ contract Betting is usingOraclize {
    mapping(address => Player) public playerInfo;
    
    constructor() public  {
-       owner = msg.sender;
+        owner = msg.sender;
+        count1 = 0;
+        count2 = 0;
       //oraclize_setCustomGasPrice(40000000000);
-      minimumBet = 100000000000000; //units in wei which is equals to 0.000000001 ethers
+        minimumBet = 100000000000000; //units in wei which is equals to 0.000000001 ethers
    }
    
 //   function sendNumberAndAmount (string memory _numberInRangeOf0To1) public payable {
@@ -49,16 +53,27 @@ contract Betting is usingOraclize {
 // 	}
    
    //query function calls update to send a request to Oracle network
-    function query() public payable {
-        oraclizeID = oraclize_query("URL", "json(https://www.cricbuzz.com/match-api/livematches.json).matches.\"22459\".winning_team_id");
-    }
-   
+    // function query() public payable {
+    //     oraclizeID = oraclize_query("URL", "json(https://www.cricbuzz.com/match-api/livematches.json).matches.\"22459\".winning_team_id");
+    // }
+   function query(string memory result) public payable returns (bytes32 player_id){
+       if(keccak256(abi.encodePacked(result)) == keccak256(abi.encodePacked("1")))
+       {
+           count1++;
+       }
+       else if(keccak256(abi.encodePacked(result)) == keccak256(abi.encodePacked("2"))){
+           count2++;
+       }
+       else{
+           revert();
+       }
+   }
    //callback function is used to get the results from Oracle
-    function __callback(bytes32 _oraclizeID, string memory result) public {
-        require(msg.sender == oraclize_cbAddress());
-        winner_result = result;
-        _oraclizeID;
-    }
+    // function __callback(bytes32 _oraclizeID, string memory result) public {
+    //     require(msg.sender == oraclize_cbAddress());
+    //     winner_result = result;
+    //     _oraclizeID;
+    // }
     
     function getWinnerResult() public view returns(string memory){
     return(winner_result);    
@@ -88,10 +103,10 @@ contract Betting is usingOraclize {
       emit betAccpeted(msg.sender, msg.value);
       emit rollAccpeted(msg.sender, _teamSelected);
       //at the end, we increment the stakes of the team selected with the player bet
-      if (keccak256(abi.encodePacked(_teamSelected)) == keccak256(abi.encodePacked("58"))){
+      if (keccak256(abi.encodePacked(_teamSelected)) == keccak256(abi.encodePacked("1"))){
           totalBetsOne += _amountbet;
       }
-      else if(keccak256(abi.encodePacked(_teamSelected)) == keccak256(abi.encodePacked("255"))){
+      else if(keccak256(abi.encodePacked(_teamSelected)) == keccak256(abi.encodePacked("2"))){
           totalBetsTwo += _amountbet;
       }
       else{
@@ -147,11 +162,11 @@ contract Betting is usingOraclize {
          }
       }
 //We define which bet sum is the Loser one and which one is the winner
-      if ( keccak256(abi.encodePacked(_winner_result)) == keccak256(abi.encodePacked("58"))){
+      if ( keccak256(abi.encodePacked(_winner_result)) == keccak256(abi.encodePacked("1"))){
          LoserBet = totalBetsTwo;
          WinnerBet = totalBetsOne;
       }
-      else if(keccak256(abi.encodePacked(_winner_result)) == keccak256(abi.encodePacked("255"))){
+      else if(keccak256(abi.encodePacked(_winner_result)) == keccak256(abi.encodePacked("2"))){
           LoserBet = totalBetsOne;
           WinnerBet = totalBetsTwo;
       }

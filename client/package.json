@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "deepmerge": "^2.1.0",
+    "is-plain-object": "^2.0.4",
     "react": "^16.6.3",
+    "react-datetime": "^2.16.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
-    "web3": "^1.0.0-beta.37",
-    "deepmerge": "^2.1.0",
-    "is-plain-object": "^2.0.4"
+    "web3": "^1.0.0-beta.37"
   },
   "scripts": {
     "start": "react-scripts start",
