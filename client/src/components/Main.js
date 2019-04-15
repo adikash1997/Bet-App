@@ -16,6 +16,12 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import { Dialog } from "@material-ui/core";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContentText from "@material-ui/core/DialogContentText";
+
 // const styles = {
 //   root: {
 //     flexGrow: 1,
@@ -118,7 +124,6 @@ TabContainer.propTypes = {
 //   classes: PropTypes.object.isRequired,
 // };
 
-
 class Main extends React.Component {
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -126,13 +131,27 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openf1: false,
+      openf2: false,
+
       value: 0,
       name: "",
       result: "",
-      amt: 0,
-    }
+      amt: 0
+    };
+  }
+  handleClickOpen1 = () => {
+    this.setState({ openf1: true });
   };
-
+  handleClickOpen2 = () => {
+    this.setState({ openf2: true });
+  };
+  handleClose1 = () => {
+    this.setState({ openf1: false });
+  };
+  handleClose2 = () => {
+    this.setState({ openf2: false });
+  };
   render() {
     const { classes } = this.props;
     const { value } = this.state;
@@ -163,79 +182,57 @@ class Main extends React.Component {
             </Tabs>
           </AppBar>
           {value === 0 && <TabContainer />} {/*Home page of BlockBet*/}
-          <Card className={classes.card}>
-            <CardHeader title="MI vs RCB" subheader="April 15, 2019" />
-            <CardMedia
-              className={classes.media}
-              image="bet_dummy.jpg"
-              title="Bet Image"
-            />
-            <CardContent>
-              <form className={classes.container} noValidate autoComplete="off">
-                <TextField
-                  id="outlined-name"
-                  label="Team Name"
-                  className={classes.textField}
-                  value={this.state.name}
-                  onChange={this.handleChange("name")}
-                  margin="normal"
-                  variant="outlined"
-                  type="text"
-                />
-                <br />
-                <TextField
-                  id="outlined-name"
-                  label="Bet Amount"
-                  className={classes.textField}
-                  value={this.state.amt}
-                  onChange={this.handleChange("amt")}
-                  margin="normal"
-                  variant="outlined"
-                  type="number"
-                  InputProps={{ inputProps: { min: 0, max: 100 } }}
-                />
-              </form>
-            </CardContent>
-            <CardActions className={classes.actions} disableActionSpacing>
-              <Button
-                variant="contained"
-                color="primary"
-                justify="center"
-                className={classes.button}
-              >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.handleClickOpen1}
+          >
+            Bet
+          </Button>
+          <Dialog
+            open={this.state.openf1}
+            onClose={this.handleClose1}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Bet on a Match</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Enter Team Name</DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Team name"
+                value={this.state.name}
+                onChange={this.handleChange("name")}
+                margin="normal"
+                variant="outlined"
+                type="text"
+                fullWidth
+              />
+              <br />
+              <br />
+              <DialogContentText>Bet Amount</DialogContentText>
+              <TextField
+                id="outlined-name"
+                label="Bet Amount"
+                className={classes.textField}
+                value={this.state.amt}
+                onChange={this.handleChange("amt")}
+                margin="normal"
+                variant="outlined"
+                type="number"
+                InputProps={{ inputProps: { min: 0, max: 100 } }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose1} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleClose1} color="primary">
                 Bet
               </Button>
-            </CardActions>
-          </Card>
-          <Card className={classes.card}>
-            <CardHeader
-              title="MI vs RCB Result Verification"
-              subheader="April 15, 2019"
-            />
-            <CardContent>
-              <form className={classes.container} noValidate autoComplete="off">
-                <TextField
-                  id="outlined-name"
-                  label="Output of the Match"
-                  className={classes.textField}
-                  value={this.state.result}
-                  onChange={this.handleChange("result")}
-                  margin="normal"
-                  variant="outlined"
-                  type="text"
-                />
-              </form>
-            </CardContent>
-            <CardActions className={classes.actions} disableActionSpacing>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Submit Result
-              </Button>
-            </CardActions>
-          </Card>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </div>
     );

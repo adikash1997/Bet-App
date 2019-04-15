@@ -67,6 +67,7 @@ contract Betting is usingOraclize {
        else{
            revert();
        }
+       return player_id;
    }
    //callback function is used to get the results from Oracle
     // function __callback(bytes32 _oraclizeID, string memory result) public {
