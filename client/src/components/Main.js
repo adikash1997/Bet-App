@@ -5,13 +5,11 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 // import { createMuiTheme } from "@material-ui/core/styles";
-// import pink from "@material-ui/core/colors/pink";
+//import lightGreen from "@material-ui/core/colors/lightGreen";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
+//import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import TextField from "@material-ui/core/TextField";
@@ -21,6 +19,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import Paper from "@material-ui/core/Paper";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 // const styles = {
 //   root: {
@@ -35,24 +35,36 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 //   },
 // };
 
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: {
-//       main: "#7986cb"
-//     },
-//     secondary: pink
-//   }
-// });
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#8bc34a",
+      secondary: { main: "#11cb5f" }
+    }
+  },
+  typography: { useNextVariants: true }
+});
 
 const styles = theme => ({
   card: {
-    minWidth: 300,
-    minHeight: 500,
-    height: 500,
-    width: 300,
+    minWidth: 250,
+    minHeight: 250,
+    height: 275,
+    width: 275,
+    // margin: 100,
+    // marginLeft: 150,
+    marginBottom: 50,
+    padding: 30
+  },
+  smallcard:{
+    minWidth: 250,
+    minHeight: 50,
+    height: 50,
+    width: 275,
     margin: 100,
-    marginLeft: 150,
-    padding: 20
+    marginTop: 75,
+    padding: 25,
+    paddingTop: 40
   },
   actions: {
     display: "flex"
@@ -69,15 +81,17 @@ const styles = theme => ({
     marginTop: 16
   },
   button: {
-    margin: theme.spacing.unit,
-    marginLeft: 30,
+    margin: 100,
     marginTop: 30,
-    width: 185
-  },
-  menu: {
     width: 200
   },
+  header: {
+    height: 150
+  },
   root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper
   },
@@ -86,42 +100,16 @@ const styles = theme => ({
   }
 });
 
-function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired
-};
-
-// function ButtonAppBar(props) {
-//   const { classes } = props;
+// function TabContainer(props) {
 //   return (
-//     <div className={classes.root}>
-//       <AppBar position="static">
-//         <Toolbar>
-//           <IconButton
-//             className={classes.menuButton}
-//             color="inherit"
-//             aria-label="Menu"
-//           >
-//             <MenuIcon />
-//           </IconButton>
-//           <Typography variant="h6" color="inherit" className={classes.grow}>
-//             BlockBet
-//           </Typography>
-//         </Toolbar>
-//       </AppBar>
-//     </div>
+//     <Typography component="div" style={{ padding: 8 * 3 }}>
+//       {props.children}
+//     </Typography>
 //   );
 // }
 
-// ButtonAppBar.propTypes = {
-//   classes: PropTypes.object.isRequired,
+// TabContainer.propTypes = {
+//   children: PropTypes.node.isRequired
 // };
 
 class Main extends React.Component {
@@ -154,41 +142,141 @@ class Main extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
+    //const { value } = this.state;
 
     return (
       <div className={classes.root}>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={{ backgroundColor: "#eeeeee" }}
-        >
-          <AppBar position="static">
+        
+          <AppBar position="static" className={classes.header}>
             <Toolbar>
               <Typography variant="h6" color="inherit" className={classes.grow}>
                 BlockBet
               </Typography>
             </Toolbar>
-            <Tabs
-              value={this.state.value}
-              onChange={this.handleChange}
-              indicatorColor="primary"
-              textColor="secondary"
-              centered
-            >
-              <Tab label="Home" />
-            </Tabs>
           </AppBar>
-          {value === 0 && <TabContainer />} {/*Home page of BlockBet*/}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.handleClickOpen1}
+          <Paper
+            className={classes.root}
+            elevation={1}
+            style={{ marginTop: 50 }}
           >
-            Bet
-          </Button>
+          
+            <Typography variant="h2" component="h2">
+              Matches to Bet
+            </Typography>
+            <br/>
+            <Grid container direction="row" justify="center" alignItems="center">
+
+            <Paper>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+            <Card className={classes.smallcard}>
+              <Typography variant="h5" component="h3">
+                Match 1
+              </Typography>
+            </Card>
+              <Card className={classes.card}>
+                <CardHeader title="1 VS 2" subheader="ID : 001" />
+                <CardContent>
+                  <MuiThemeProvider theme={theme}>                   
+                      <Typography variant="h5" component="h5" color="primary">
+                      Status : Open
+                      </Typography>
+                    
+                  </MuiThemeProvider>
+                </CardContent>
+                <CardActions className={classes.actions} disableActionSpacing>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.handleClickOpen1}
+                  >
+                    Bet
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            </Paper>
+
+            <Paper>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+            <Card className={classes.smallcard}>
+              <Typography variant="h5" component="h3">
+                Match 2
+              </Typography>
+            </Card>
+              <Card className={classes.card}>
+                <CardHeader title="1 VS 2" subheader="ID : 002" />
+                <CardContent>
+                  <MuiThemeProvider theme={theme}>                   
+                      <Typography variant="h5" component="h5" color="primary">
+                      Status : Open
+                      </Typography>
+                    
+                  </MuiThemeProvider>
+                </CardContent>
+                <CardActions className={classes.actions} disableActionSpacing>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.handleClickOpen1}
+                  >
+                    Bet
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            </Paper>
+
+
+            <Paper>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+            <Card className={classes.smallcard}>
+              <Typography variant="h5" component="h3">
+                Match 3
+              </Typography>
+            </Card>
+              <Card className={classes.card}>
+                <CardHeader title="1 VS 2" subheader="ID : 003" />
+                <CardContent>
+                  <MuiThemeProvider theme={theme}>                   
+                      <Typography variant="h5" component="h5" color="primary">
+                      Status : Open
+                      </Typography>
+                    
+                  </MuiThemeProvider>
+                </CardContent>
+                <CardActions className={classes.actions} disableActionSpacing>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.handleClickOpen1}
+                  >
+                    Bet
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            </Paper>
+            </Grid>
+          </Paper>
+
           <Dialog
             open={this.state.openf1}
             onClose={this.handleClose1}
@@ -204,7 +292,6 @@ class Main extends React.Component {
                 label="Team name"
                 value={this.state.name}
                 onChange={this.handleChange("name")}
-                margin="normal"
                 variant="outlined"
                 type="text"
                 fullWidth
@@ -233,7 +320,7 @@ class Main extends React.Component {
               </Button>
             </DialogActions>
           </Dialog>
-        </Grid>
+        
       </div>
     );
   }
