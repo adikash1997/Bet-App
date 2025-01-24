@@ -7,7 +7,7 @@
     "is-plain-object": "^2.0.4",
     "react": "^16.6.3",
     "react-datetime": "^2.16.3",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.14.0",
     "react-scripts": "5.0.0",
     "web3": "^4.13.0"
   },
